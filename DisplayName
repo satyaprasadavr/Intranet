@@ -1,0 +1,32 @@
+<script type="text/javascript">
+    // Function to get the current user's name
+    function getUserName() {
+        var context = SP.ClientContext.get_current();
+        var user = context.get_web().get_currentUser();
+        context.load(user);
+        context.executeQueryAsync(
+            function() {
+                var userName = user.get_title();
+                displayWelcomeMessage(userName);
+            },
+            function(sender, args) {
+                console.log('Error: ' + args.get_message());
+            }
+        );
+    }
+
+    // Function to display the welcome message
+    function displayWelcomeMessage(userName) {
+        var welcomeMessage = 'Welcome, ' + userName + '!';
+        document.getElementById('welcomeMessage').innerText = welcomeMessage;
+    }
+
+    // Execute the function when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        getUserName();
+    });
+</script>
+
+<!-- HTML element to display the welcome message -->
+<div id="welcomeMessage"></div>
+
